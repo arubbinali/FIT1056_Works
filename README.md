@@ -1,4 +1,5 @@
-# Music School Management System (MSMS)
+# FIT1056
+## Music School Management System (MSMS)
 
 This project builds a Music School Management System over five stages
 (PSTs). Each stage is an upgrade on the one before it, going from a
@@ -49,7 +50,10 @@ It's broken into 4 fragments:
 
 
 --- 
-##### Author: Arub
-##### Website: https://arubbinali.github.io/
-##### Other works: https://arubbinali.github.io/d/
+Author: Arub
 
+Website: https://arubbinali.github.io/
+
+Other works: https://arubbinali.github.io/d/
+
+> This README is not complete and is under development.
