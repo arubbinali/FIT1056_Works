@@ -48,15 +48,15 @@ def list_teachers():
         print(f"  ID: {teacher.id}, Name: {teacher.name}, Speciality: {teacher.speciality}")
 
 def find_students(term):
-    """Finds students by name."""
-    print(f"\n--- Finding Students matching '{term}' ---")
 
+    print(f"\n--- Finding Students matching '{term}' ---")
     results = []
 
     for student in student_db:
-        if term in student: results.append(student)
- 
-    if len(results) == 0: print("No match found.")
+        if term.lower() in student.name.lower():
+            results.append(student)
+
+    if len(results) == 0: print("No match found (from students).")
     else:
         for student in results:
             print(f"  ID: {student.id}, Name: {student.name}, Enrolled in: {student.enrolled_in}")
@@ -71,7 +71,7 @@ def find_teachers(term):
         if (term.lower() in teacher.name.lower()) or (term.lower() in teacher.speciality.lower()):
             results.append(teacher)
 
-    if len(results) == 0: print("No match found.")
+    if len(results) == 0: print("No match found (from teachers).")
     else:
         for teacher in results:
             print(f"  ID: {teacher.id}, Name: {teacher.name}, Speciality: {teacher.speciality}")
