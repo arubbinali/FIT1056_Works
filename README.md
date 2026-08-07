@@ -21,7 +21,7 @@ This is the first stage. The goal here is just to get a working
 console app going that proves the core logic works - registering
 students, enrolling them in instruments, and looking things up. Nothing
 gets saved anywhere yet, all the data lives in memory and resets every
-time the program stops. Everything is built inside one file, `MSMS.py`.
+time the program stops. Everything is built inside one file, [`MSMS.py`](https://github.com/arubbinali/FIT1056_Works/blob/main/FIT1056-PSTs-36913006/PST1/MSMS.py).
 
 It's broken into 4 fragments:
 
