@@ -65,7 +65,6 @@ It's broken into 4 fragments:
 
 ### Design choices / assumptions
 
-- All application state lives in a single global `app_data` dictionary rather than separate variables, so one `save_data()` / `load_data()` pair can persist everything at once.
 - `save_data()` is called immediately after any state-changing action (check-in, update, remove) rather than only on exit, so a crash or forced quit doesn't lose progress.
 - ID lookups assume `student_id` / `teacher_id` are unique integers matching the `id` key stored in each record.
 
