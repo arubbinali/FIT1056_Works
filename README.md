@@ -52,8 +52,8 @@ It's broken into 4 fragments:
 --- 
 Author: Arub
 
-Website: https://arubbinali.github.io/
+Website: https://doaor.com/
 
-Other works: https://arubbinali.github.io/d/
+Other works: https://doaor.com/d/
 
 > This README is not complete and is under development. ([https://github.com/arubbinali/FIT1056_Works](https://github.com/arubbinali/FIT1056_Works))
