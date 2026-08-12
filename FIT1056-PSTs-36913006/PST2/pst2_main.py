@@ -98,3 +98,49 @@ def print_student_card(student_id):
         print(f"Printed student card to {filename}.")
     else:
         print(f"Error: Could not print card, student {student_id} not found.")
+
+# --- Main Application Loop ---
+def main():
+    load_data()
+
+    while True:
+        print("\n===== MSMS v2 (Persistent) =====")
+        print("1. Check-in Student")
+        print("2. Print Student Card")
+        print("3. Update Teacher Info")
+        print("4. Remove Student")
+        print("q. Quit and Save")
+
+        choice = input("Enter your choice: ")
+
+        made_change = False
+        if choice == '1':
+            student_id = int(input("Enter student ID: "))
+            course_id = input("Enter course ID: ")
+            check_in(student_id, course_id)
+            made_change = True
+        elif choice == '2':
+            student_id = int(input("Enter student ID: "))
+            print_student_card(student_id)
+        elif choice == '3':
+            teacher_id = int(input("Enter teacher ID: "))
+            new_speciality = input("Enter new speciality: ")
+            update_teacher(teacher_id, speciality=new_speciality)
+            made_change = True
+        elif choice == '4':
+            student_id = int(input("Enter student ID: "))
+            remove_student(student_id)
+            made_change = True
+        elif choice.lower() == 'q':
+            print("Saving final changes and exiting.")
+            break
+        else:
+            print("Invalid choice.")
+
+        if made_change:
+            save_data()
+
+    save_data()
+
+if __name__ == "__main__":
+    main()
