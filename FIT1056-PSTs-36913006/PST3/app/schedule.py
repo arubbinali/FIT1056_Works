@@ -106,3 +106,56 @@ class ScheduleManager:
         self._save_data()
         print(f"Success: Student {student.name} checked into {course.name}.")
         return True
+
+    def find_teacher_by_id(self, teacher_id):
+        """Finds one teacher using their exact ID."""
+        for teacher in self.teachers:
+            if teacher.id == teacher_id:
+                return teacher
+        return None
+
+    def get_daily_roster(self, day):
+        """Returns all lessons scheduled on a given day."""
+        roster = []
+
+        for course in self.courses:
+            teacher = self.find_teacher_by_id(course.teacher_id)
+
+            for lesson in course.lessons:
+                if lesson["day"].lower() == day.lower():
+                    roster.append({
+                        "start_time": lesson["start_time"],
+                        "course_name": course.name,
+                        "teacher_name": teacher.name,
+                        "room": lesson["room"]
+                    })
+
+        return sorted(roster, key=lambda lesson: lesson["start_time"])
+
+    def switch_course(self, student_id, from_course_id, to_course_id):
+        """Moves a student from one valid course to another."""
+        student = self.find_student_by_id(student_id)
+        from_course = self.find_course_by_id(from_course_id)
+        to_course = self.find_course_by_id(to_course_id)
+
+        if not student or not from_course or not to_course:
+            print("Error: Course switch failed. Invalid Student or Course ID.")
+            return False
+
+        if from_course_id not in student.enrolled_course_ids:
+            print(f"Error: {student.name} is not enrolled in {from_course.name}.")
+            return False
+
+        if to_course_id in student.enrolled_course_ids:
+            print(f"Error: {student.name} is already enrolled in {to_course.name}.")
+            return False
+
+        student.enrolled_course_ids.remove(from_course_id)
+        student.enrolled_course_ids.append(to_course_id)
+
+        from_course.enrolled_student_ids.remove(student_id)
+        to_course.enrolled_student_ids.append(student_id)
+
+        self._save_data()
+        print(f"Success: {student.name} switched from {from_course.name} to {to_course.name}.")
+        return True
