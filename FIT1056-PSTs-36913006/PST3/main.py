@@ -23,6 +23,30 @@ def front_desk_daily_roster(manager, day):
         )
 
 
+def front_desk_show_records(manager):
+    """Displays students, their courses, and all available courses."""
+    print("\n--- Students ---")
+
+    for student in manager.students:
+        course_names = []
+
+        for course_id in student.enrolled_course_ids:
+            course = manager.find_course_by_id(course_id)
+
+            if course:
+                course_names.append(course.name)
+
+        print(
+            f"ID: {student.id} | {student.name} | "
+            f"Courses: {', '.join(course_names)}"
+        )
+
+    print("\n--- Available Courses ---")
+
+    for course in manager.courses:
+        print(f"ID: {course.id} | {course.name} | {course.instrument}")
+
+
 def switch_course(manager, student_id, from_course_id, to_course_id):
     """Requests a course switch through the ScheduleManager."""
     return manager.switch_course(student_id, from_course_id, to_course_id)
@@ -46,6 +70,7 @@ def main():
         print("1. View Daily Roster")
         print("2. Check In Student")
         print("3. Switch Student Course")
+        print("4. View Students and Courses")
         print("q. Quit")
 
         choice = input("Enter choice: ").strip()
@@ -73,6 +98,9 @@ def main():
                     from_course_id,
                     to_course_id
                 )
+
+        elif choice == "4":
+            front_desk_show_records(manager)
 
         elif choice.lower() == "q":
             print("Exiting program. Goodbye!")
