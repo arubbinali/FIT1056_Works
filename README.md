@@ -31,6 +31,7 @@ FIT1056-PSTs-36913006/
 * Uses `ScheduleManager` as the controller for loading, saving, searching, attendance, daily rosters, and course switches.
 * Loads JSON dictionaries into Python objects on startup and saves objects back to JSON after changes.
 * Displays daily lesson rosters with the lesson time, course, teacher, and room.
+* Displays students and available courses so the receptionist can find valid IDs.
 * Records a student check-in with an ISO-format timestamp.
 * Validates IDs and prevents invalid or duplicate course switches.
 
