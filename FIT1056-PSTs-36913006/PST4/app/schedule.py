@@ -159,3 +159,59 @@ class ScheduleManager:
         self._save_data()
         print(f"Success: {student.name} switched from {from_course.name} to {to_course.name}.")
         return True
+
+    def search_students(self, term):
+        """Returns students whose names contain the search term."""
+        search_term = term.strip().lower()
+
+        if not search_term:
+            return self.students
+
+        matching_students = []
+
+        for student in self.students:
+            if search_term in student.name.lower():
+                matching_students.append(student)
+
+        return matching_students
+
+    def register_new_student(self, name, instrument):
+        """Registers a student and enrols them in a matching course."""
+        clean_name = name.strip()
+        clean_instrument = instrument.strip().lower()
+
+        if not clean_name or not clean_instrument:
+            return None
+
+        for student in self.students:
+            if student.name.lower() == clean_name.lower():
+                return None
+
+        selected_course = None
+
+        for course in self.courses:
+            teacher = self.find_teacher_by_id(course.teacher_id)
+
+            if (
+                course.instrument.lower() == clean_instrument
+                and teacher is not None
+            ):
+                selected_course = course
+                break
+
+        if selected_course is None:
+            return None
+
+        new_student_id = max(
+            (student.id for student in self.students),
+            default=0
+        ) + 1
+
+        new_student = StudentUser(new_student_id, clean_name)
+        new_student.enrolled_course_ids.append(selected_course.id)
+
+        self.students.append(new_student)
+        selected_course.enrolled_student_ids.append(new_student_id)
+
+        self._save_data()
+        return new_student
