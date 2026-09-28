@@ -50,6 +50,13 @@ def show_student_management_page(manager):
             available_instruments.append(course.instrument)
 
     available_instruments.sort()
+    
+    if not available_instruments:
+        st.warning(
+            "Registration is unavailable because no courses have "
+            "an assigned teacher."
+        )
+        return
 
     with st.form("registration_form", clear_on_submit=True):
         student_name = st.text_input("New Student Name")
