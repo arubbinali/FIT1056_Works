@@ -149,5 +149,5 @@ OpenAI Codex was used to assist with code development, debugging, testing strate
 
 ## Author
 
-**Muhammad Arub bin Ali**  
+**Muhammad Arub bin Ali**
 Student ID: **36913006**
