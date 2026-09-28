@@ -121,16 +121,24 @@ class ScheduleManager:
         for course in self.courses:
             teacher = self.find_teacher_by_id(course.teacher_id)
 
+            if teacher is None:
+                teacher_name = "Unassigned"
+            else:
+                teacher_name = teacher.name
+
             for lesson in course.lessons:
-                if lesson["day"].lower() == day.lower():
+                if lesson.get("day", "").lower() == day.lower():
                     roster.append({
-                        "start_time": lesson["start_time"],
+                        "start_time": lesson.get("start_time", "Unknown"),
                         "course_name": course.name,
-                        "teacher_name": teacher.name,
-                        "room": lesson["room"]
+                        "teacher_name": teacher_name,
+                        "room": lesson.get("room", "Unassigned")
                     })
 
-        return sorted(roster, key=lambda lesson: lesson["start_time"])
+        return sorted(
+            roster,
+            key=lambda lesson: lesson["start_time"]
+        )
 
     def switch_course(self, student_id, from_course_id, to_course_id):
         """Moves a student from one valid course to another."""
