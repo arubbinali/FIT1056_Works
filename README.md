@@ -1,153 +1,187 @@
 # FIT1056 - Music School Management System
 
-This individual project develops a Music School Management System (MSMS) across five Problem-Solving Tasks (PSTs). Each stage improves the architecture and functionality of the previous stage.
+This individual project develops a Music School Management System (MSMS)
+across five Problem-Solving Tasks. Each stage improves the architecture,
+functionality, and reliability of the previous stage.
 
 ## Project stages
 
-- **PST1 - In-Memory Prototype:** Console-based student and teacher management using in-memory data.
-- **PST2 - Persistence Upgrade:** Added JSON storage, CRUD operations, attendance records, and student ID-card generation.
-- **PST3 - Object-Oriented Architecture:** Rebuilt the system using model classes, a controller, persistent data, and a separate console view.
-- **PST4 - Graphical User Interface:** Replaced the console view with a Streamlit interface for managing students, courses, attendance, and daily rosters.
-- **PST5 - Quality Assurance:** Will add automated testing and further error handling.
+- **PST1 - In-Memory Prototype:** Console-based student and teacher
+  management using in-memory data.
+- **PST2 - Persistence Upgrade:** Added JSON storage, CRUD operations,
+  attendance records, and student ID-card generation.
+- **PST3 - Object-Oriented Architecture:** Rebuilt the system using model
+  classes, a controller, persistent data, and a separate console view.
+- **PST4 - Graphical User Interface:** Replaced the console view with a
+  Streamlit interface for students, courses, attendance, and daily rosters.
+- **PST5 - Quality and Finance Gate:** Added payment tracking, CSV reports,
+  logging, backups, lesson cancellation, input validation, and automated tests.
 
-## PST4 features
+## PST5 features
 
-- Streamlit dashboard with navigation and session-state management.
-- Overview page showing totals for students, teachers, courses, and attendance records.
-- Case-insensitive student search by full or partial name.
-- Student registration using a name and instrument.
-- Automatic student ID generation.
-- Validation for blank names, duplicate students, invalid instruments, and unavailable courses.
-- Daily lesson roster filtered by weekday.
-- Roster information showing lesson time, course, teacher, and room.
-- Student check-in using valid student and course IDs.
-- Attendance records saved with ISO-format timestamps.
-- Course switching with validation for invalid IDs, existing enrolments, and duplicate target courses.
-- Persistent JSON storage so changes remain after restarting the application.
-- Safe handling of courses without an assigned teacher.
+- Records validated payments for existing students and saves them to JSON.
+- Shows each student's payment history and total amount paid.
+- Exports finance and attendance reports as CSV files.
+- Provides finance and report-download controls in the Streamlit interface.
+- Creates a timestamped data backup when a Streamlit session starts.
+- Logs important operations and errors to `logs/msms.log`.
+- Cancels lessons without deleting their audit details.
+- Preserves compatibility with PST4 JSON files that do not contain finance data.
+- Handles missing or malformed data files without crashing during startup.
+- Includes automated tests for successful operations, invalid input,
+  persistence, reporting, backups, logging, and important edge cases.
 
-## PST4 structure
+## PST5 structure
 
 ```text
 FIT1056-PSTs-36913006/
-└── PST4/
+└── PST5/
     ├── app/
     │   ├── __init__.py
-    │   ├── user.py
+    │   ├── admin_utils.py
+    │   ├── schedule.py
     │   ├── student.py
     │   ├── teacher.py
-    │   └── schedule.py
+    │   └── user.py
     ├── data/
     │   └── msms.json
     ├── gui/
     │   ├── __init__.py
+    │   ├── course_pages.py
+    │   ├── finance_pages.py
     │   ├── main_dashboard.py
-    │   ├── student_pages.py
     │   ├── roster_pages.py
-    │   └── course_pages.py
+    │   └── student_pages.py
+    ├── tests/
+    │   ├── __init__.py
+    │   ├── test_admin_utils.py
+    │   └── test_schedule_manager.py
     ├── main.py
+    ├── pytest.ini
     └── requirements.txt
 ```
 
-## Requirements
+The `logs/` and `data/backups/` directories are created automatically at
+runtime and should not be committed.
 
-- Python 3
-- Streamlit 1.64.0
-- pandas 2.3.3
+## Requirements and installation
 
-Install the required packages from inside the PST4 folder:
+- Python 3.10 or newer
+- Streamlit
+- pandas
+- pytest
 
-```bash
+From inside the `PST5` directory, install the declared packages:
+
+```powershell
 py -m pip install -r requirements.txt
 ```
 
-## Running PST4
+## Running the application
 
-Navigate to the PST4 folder:
+From the repository root:
 
-```bash
-cd FIT1056-PSTs-36913006/PST4
-```
-
-Start the Streamlit application:
-
-```bash
+```powershell
+Set-Location .\FIT1056-PSTs-36913006\PST5
 py -m streamlit run main.py
 ```
 
-Streamlit will display a local address in the terminal and normally open the application automatically in the default web browser.
+Streamlit displays a local URL and normally opens it in the default browser.
+Use the sidebar to open the overview, student, roster, course, and finance
+pages.
 
-## Using the application
+## Running the automated tests
 
-### Overview
+Run the following command from inside `PST5`:
 
-The overview page displays the total numbers of students, teachers, courses, and attendance records currently loaded from the JSON data file.
-
-### Student search
-
-Open the student search page and enter all or part of a student's name. The search is case-insensitive and displays matching students and their enrolled courses.
-
-### Student registration
-
-Enter the student's name and select an instrument. The system finds an available course for that instrument, creates a unique student ID, enrols the student, and saves the updated data.
-
-### Daily roster
-
-Select a weekday to view all lessons scheduled for that day. Each roster entry includes the start time, course name, teacher, and room.
-
-### Student check-in
-
-Select a student and course from the displayed options. A successful check-in adds an attendance record containing the student ID, course ID, and current timestamp.
-
-### Course management
-
-The course-management page displays the available courses and allows a student to switch from one enrolled course to another valid course.
-
-## Testing
-
-PST4 was tested using copies of the supplied sample JSON data so the original data remained unchanged.
-
-The following scenarios were tested:
-
-- The supplied students, teachers, courses, lessons, and attendance records load correctly.
-- Student searches work with full names, partial names, and different letter cases.
-- A valid student registration updates both the student and course enrolment records.
-- Registered students remain available after the JSON file is reloaded.
-- Blank names, duplicate names, and invalid instruments are rejected.
-- Monday's roster displays Beginner Piano at 16:00 in Room A.
-- Days without lessons display an empty-roster message.
-- A course with a missing teacher displays `Unassigned` instead of crashing.
-- A valid check-in is saved and remains after the JSON file is reloaded.
-- Invalid student and course IDs are rejected without crashing.
-- Valid course switches update the student and both course enrolment lists.
-- Invalid and duplicate course switches are rejected.
-- The saved JSON remains valid after changes.
-
-Python files can also be checked for syntax errors from the repository root using:
-
-```bash
-py -m compileall -q FIT1056-PSTs-36913006/PST4
+```powershell
+py -m pytest
 ```
+
+Pytest automatically discovers the files in `tests/`. A successful run ends
+with all tests marked as passed. The tests use temporary files, so they do not
+change `data/msms.json`.
+
+Python syntax can also be checked from inside `PST5`:
+
+```powershell
+py -m compileall -q .
+```
+
+## Main PST5 operations
+
+### Payment recording
+
+`ScheduleManager.record_payment(student_id, amount, method)` confirms that the
+student exists, the amount is a finite positive number, and the payment method
+is not blank. A successful payment receives an ISO-format timestamp, is added
+to `finance_log`, is saved immediately, and produces a log entry.
+
+### Payment history
+
+`ScheduleManager.get_payment_history(student_id)` filters the finance log and
+returns only that student's transactions. The finance page displays these
+records and calculates the student's total paid amount.
+
+### CSV reports
+
+`ScheduleManager.export_report(kind, out_path)` supports `finance` and
+`attendance`. It writes the correct CSV header even when a report has no rows,
+creates missing output directories, and rejects unknown report types.
+
+### Logging and backups
+
+`init_logger()` configures timestamped file logging. `backup_data()` copies the
+JSON file to `data/backups/` with a unique timestamped filename. The launcher
+creates one backup at the beginning of each Streamlit browser session.
+
+### Lesson cancellation
+
+`ScheduleManager.cancel_lesson(lesson_id, reason)` records the reason and
+cancellation timestamp instead of deleting the lesson. Cancelled lessons are
+excluded from the active daily roster while their audit data remains saved.
+
+## Testing completed
+
+The automated suite covers:
+
+- loading all object and log data;
+- compatibility with older PST4 data;
+- unique course creation and persistence;
+- valid payment recording and reloading;
+- rejected unknown students, blank methods, and invalid amounts;
+- student-specific and empty payment histories;
+- finance, attendance, empty, and invalid CSV exports;
+- enrolment-aware student check-in;
+- consistent course switching on both sides of the relationship;
+- lesson cancellation and roster filtering;
+- safe handling of malformed JSON;
+- successful backups, missing backup sources, and file logging.
+
+The Streamlit launcher and every navigation page were also smoke-tested using
+Streamlit's application testing interface.
 
 ## Design choices and assumptions
 
-PST4 separates the program into three main layers:
-
-- **Model:** `User`, `StudentUser`, `TeacherUser`, and `Course` represent the system's main entities.
-- **Controller:** `ScheduleManager` handles data loading, saving, searching, registration, attendance, rosters, and course switching.
-- **View:** The files inside `gui` contain the Streamlit pages and user-interface components.
-
-One `ScheduleManager` instance is stored in Streamlit session state so the application does not reload the controller unnecessarily during normal page interactions.
-
-Student registration enrols a student in the first available course matching the selected instrument. Only courses with assigned teachers are offered for registration.
-
-The JSON file is saved immediately after operations that change the data, reducing the risk of losing changes if the program closes unexpectedly.
+- `User`, `StudentUser`, `TeacherUser`, and `Course` are the data models.
+- `ScheduleManager` is the controller for persistence and business logic.
+- Files in `gui/` are the Streamlit view layer.
+- JSON remains the single source of truth so the system stays compatible with
+  earlier PST stages.
+- State-changing methods save immediately to reduce data loss.
+- Student check-in requires enrolment in the selected course.
+- Payment amounts are stored as numbers rounded to two decimal places.
+- Cancellation is non-destructive so administrators retain an audit trail.
+- One `ScheduleManager` is stored in Streamlit session state during a session.
 
 ## AI acknowledgement
 
-OpenAI Codex was used to assist with code development, debugging, testing strategy, and documentation. All generated work was reviewed, tested, and understood by the author.
+OpenAI Codex was used to assist with code development, debugging, testing
+strategy, and documentation. All generated work was reviewed and tested by the
+author.
 
 ## Author
 
 **Muhammad Arub bin Ali**
+
 Student ID: **36913006**
